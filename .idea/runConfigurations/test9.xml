@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="test9" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="ConsoleModule.ConsoleMain" />
+    <module name="tas" />
+    <option name="PROGRAM_PARAMETERS" value="-i input9.txt -o output.txt " />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
