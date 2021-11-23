@@ -15,19 +15,19 @@ public class Logic {
     public static int resultOfTheMatch(int[][] arr) {
         boolean winOne = false;
         boolean winZero = false;
-
-        int[][] directionParams = {
+        
+        int[][] directionArgs = {
                 {0, 1}, // горизонтально
                 {1, 0}, // вертикально
                 {1, 1}, // диагонали
                 {1, -1}
         };
 
-        for (int[] params : directionParams){
-            if (checkIfWin(params[0], params[1], 0, arr)){
+        for (int[] args : directionArgs){
+            if (checkIfWin(args[0], args[1], 0, arr)){
                 winZero = true;
             }
-            if (checkIfWin(params[0], params[1], 1, arr)){
+            if (checkIfWin(args[0], args[1], 1, arr)){
                 winOne = true;
             }
         }
