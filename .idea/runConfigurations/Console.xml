@@ -2,7 +2,7 @@
   <configuration default="false" name="Console" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="ConsoleModule.ConsoleMain" />
     <module name="tas" />
-    <option name="PROGRAM_PARAMETERS" value="-i input.txt -o output.txt " />
+    <option name="PROGRAM_PARAMETERS" value="-o output.txt -i input3.txt " />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

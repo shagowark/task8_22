@@ -659,7 +659,7 @@ public class JTableUtils {
      */
     public static int[][] readIntMatrixFromJTable(JTable table) throws ParseException {
         try {
-            Integer[][] matrix = readMatrixFromJTable(table, Integer.class, Integer::parseInt, false, 0);
+            Integer[][] matrix = readMatrixFromJTable(table, Integer.class, Integer::parseInt, false, -1);
             return (int[][]) Arrays.stream(matrix).map(Utils.ArrayUtils::toPrimitive).toArray((n) -> new int[n][]);
         } catch (JTableUtilsException impossible) {
         }

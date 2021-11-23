@@ -102,6 +102,9 @@ public class FrameMain extends JFrame {
         buttonGetResult.addActionListener(e -> {
             try{
                 int[][] arr = JTableUtils.readIntMatrixFromJTable(tableInput);
+                JTableUtils.writeArrayToJTable(tableInput, arr);
+                Logic.checkIfArrayIsEmpty(arr);
+                Logic.checkIfArrayIsRectangle(arr);
                 int result = Logic.resultOfTheMatch(arr);
                 textFieldOutput.setText(Integer.toString(result));
             } catch(Exception ex){

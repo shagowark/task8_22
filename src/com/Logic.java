@@ -13,143 +13,74 @@ public class Logic {
      * @return 1 - победа единиц, 0 - ничья, -1 - победа нулей
      */
     public static int resultOfTheMatch(int[][] arr) {
-        if ((winInRow(0, arr) || winInColumn(0, arr) || winInDiagonal(0, arr)) &&
-                (winInRow(1, arr) || winInColumn(1, arr) || winInDiagonal(1, arr))) {
+        boolean winOne = false;
+        boolean winZero = false;
+
+        int[][] directionParams = {
+                {0, 1}, // горизонтально
+                {1, 0}, // вертикально
+                {1, 1}, // диагонали
+                {1, -1}
+        };
+
+        for (int[] params : directionParams){
+            if (checkIfWin(params[0], params[1], 0, arr)){
+                winZero = true;
+            }
+            if (checkIfWin(params[0], params[1], 1, arr)){
+                winOne = true;
+            }
+        }
+
+        if (winOne && winZero){
             return 0;
         }
-        if (winInRow(0, arr) || winInColumn(0, arr) || winInDiagonal(0, arr)) {
-            return -1;
-        }
-        if (winInRow(1, arr) || winInColumn(1, arr) || winInDiagonal(1, arr)) {
+        if (winOne){
             return 1;
+        }
+        if (winZero){
+            return -1;
         }
         return 0;
     }
 
-    /**
-     * Проверяет массив на победу "в ряд" для переданного аргумента (0/1)
+    /***
+     * Проверяет переданный массив на победу для переданного числа (0/1) по заданному
+     * направлению
+     * @param growthI прирост i (вертикаль) -1/0/1
+     * @param growthJ прирост j (горизонталь) -1/0/1
+     * @param x число 0/1, для которого проверяется массив
+     * @param arr массив, представляющий игровое поле
+     * @return true/false
      */
-    public static boolean winInRow(int x, int[][] arr) {
+    public static boolean checkIfWin (int growthI, int growthJ, int x, int[][] arr){
         for (int i = 0; i < arr.length; i++) {
-            int count = 0;
-            for (int j = 1; j < arr[i].length; j++) {
-                if (arr[i][j] == x && arr[i][j] == arr[i][j - 1]) {
-                    count++;
-                } else {
-                    count = 0;
-                }
-                if (count == 4) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Проверяет массив на победу "в столбик" для переданного аргумента (0/1)
-     */
-    public static boolean winInColumn(int x, int[][] arr) {
-        for (int i = 0; i < arr[0].length; i++) {
-            int count = 0;
-            int[] column = getColumn(i, arr);
-            for (int j = 1; j < column.length; j++) {
-                if (column[j] == x && column[j] == column[j - 1]) {
-                    count++;
-                } else {
-                    count = 0;
-                }
-                if (count == 4) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Проверяет массив на победу "по диагонали" для переданного аргумента (0/1)
-     */
-    public static boolean winInDiagonal(int x, int[][] arr) {
-        return checkLeftToppedDiagonal(x, arr) || checkRightToppedDiagonal(x, arr);
-    }
-
-    /**
-     * Проверяет диагонали, наклоненные влево вверх, т.е. вида "\"
-     */
-    public static boolean checkLeftToppedDiagonal(int x, int[][] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            int count = 0;
-            int tempI = i;
             for (int j = 0; j < arr[0].length; j++) {
+                int tempI = i;
                 int tempJ = j;
                 if (arr[i][j] == x) {
-                    count++;
-                    while (count != 5 && tempJ < arr[0].length - 1 && tempI < arr.length - 1) {
-                        tempJ++;
-                        tempI++;
-                        if (arr[tempI][tempJ] == x) {
-                            count++;
-                        } else {
-                            count = 0;
-                            break;
+                    int count = 1;
+                    while (count != 5 && tempI >= 0 && tempI < arr.length && tempJ >= 0
+                            && tempJ < arr[0].length) {
+                        tempI += growthI;
+                        tempJ += growthJ;
+                        if (tempI >= 0 && tempI < arr.length && tempJ >= 0 && tempJ < arr[0].length) {
+                            if (arr[tempI][tempJ] == x) {
+                                count++;
+                            } else {
+                                count = 0;
+                                break;
+                            }
                         }
                     }
-                    tempI = i;
                     if (count == 5) {
                         return true;
                     }
                 }
-                count = 0;
             }
         }
         return false;
     }
-
-    /**
-     * Проверяет диагонали, наклоненные вправо вверх, т.е. вида "/"
-     */
-    public static boolean checkRightToppedDiagonal(int x, int[][] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            int count = 0;
-            int tempI = i;
-            for (int j = 0; j < arr[0].length; j++) {
-                int tempJ = j;
-
-                if (arr[i][j] == x) {
-                    count++;
-                    while (count != 5 && tempJ > 0 && tempI < arr.length - 1) {
-                        tempI++;
-                        tempJ--;
-                        if (arr[tempI][tempJ] == x) {
-                            count++;
-                        } else {
-                            count = 0;
-                            break;
-                        }
-                    }
-                    tempI = i;
-                    if (count == 5) {
-                        return true;
-                    }
-                }
-                count = 0;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Возвращает колонку с переданным индексом
-     */
-    public static int[] getColumn(int index, int[][] arr) {
-        int[] column = new int[arr.length];
-        for (int i = 0; i < column.length; i++) {
-            column[i] = arr[i][index];
-        }
-        return column;
-    }
-
 
     /**
      * Сохраняет результат в файл
